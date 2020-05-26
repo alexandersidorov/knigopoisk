@@ -1,0 +1,9 @@
+#исключение логов
+*.log
+
+#исключение каталога target и uploads
+target
+uploads
+
+#исключение .idea
+.idea
