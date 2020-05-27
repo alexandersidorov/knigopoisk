@@ -9,7 +9,7 @@ public class MainController {
 
     @GetMapping("/")
     public String main() {
-        return "pages/main";
+        return "main";
     }
 
 
