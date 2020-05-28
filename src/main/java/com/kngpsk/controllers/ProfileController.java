@@ -14,7 +14,7 @@ public class ProfileController {
     public String profileUser(@PathVariable User user,
                               @AuthenticationPrincipal User currentUser,
                               Model model){
-        model.addAttribute("userChanel",user);
+        model.addAttribute("userChannel",user);
         model.addAttribute("isCurrentUser",user.equals(currentUser));
 
         return "profile";
