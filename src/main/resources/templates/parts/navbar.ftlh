@@ -14,6 +14,12 @@
         <a class="nav-link" href="/">Home</a>
       </li>
 
+      <#if user??>
+        <li class="nav-item">
+            <a class="nav-link" href="/profile/${currentUserId}">My Profile</a>
+        </li>
+      </#if>
+
       <#if isAdmin>
         <li class="nav-item">
             <a class="nav-link" href="/user">User List</a>
