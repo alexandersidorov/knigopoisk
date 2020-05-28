@@ -45,7 +45,7 @@ public class UserService implements UserDetailsService {
             return false;
         }
 
-        user.setActive(true);
+        user.setActive(false);
 
         if(userRepo.findAll().size()==0){
             Set<Role>roles = new HashSet<>();
@@ -87,6 +87,7 @@ public class UserService implements UserDetailsService {
             return false;
         }
         user.setActivationCode(null);
+        user.setActive(true);
         userRepo.save(user);
 
         return true;
