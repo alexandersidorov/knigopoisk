@@ -25,7 +25,10 @@ public class User implements UserDetails, Serializable {
 //    @Email(message = "Email is not correct")
 //    @NotBlank(message = "Email cannot be empty.")
     private String email;
+
     private String activationCode;
+
+    private String avatar;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
@@ -78,7 +81,10 @@ public class User implements UserDetails, Serializable {
     public String getActivationCode() {return activationCode;}
     public void setActivationCode(String activationCode) {this.activationCode = activationCode;}
 
-//    public Set<Person> getPersons() {return persons;}
+    public String getAvatar() {return avatar;}
+    public void setAvatar(String avatar) {this.avatar = avatar;}
+
+    //    public Set<Person> getPersons() {return persons;}
 //    public void setPersons(Set<Person> persons) {this.persons = persons;}
 
 //    public Set<User> getSubscribers() {return subscribers;}
