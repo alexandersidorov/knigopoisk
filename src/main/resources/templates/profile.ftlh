@@ -1,9 +1,11 @@
 <#import "parts/common.ftlh" as c>
 
 <@c.page>
-
+<#if message??>
+${message}
+</#if>
 <div class = "form-group row">
-    <div class = "col-sm-6">
+    <div class = "col-sm-2">
         <div class="card" style = "width:10rem; height:10rem">
 
             <#if userChannel.avatar??>
@@ -17,11 +19,20 @@
             </div>
         </div>
     </div>
-    <div class = "col-sm-6">
+
+    <div class = "col-sm-5">
+
+        <div class = "form-group row">
+            <label class="col-sm-2 col-form-label">Email:</label>
+            <label class="col-sm-5 col-form-label">${userChannel.email}</label>
+        </div>
+
         <#if isCurrentUser??>
-            <a href="#" class="btn btn-dark">Edit Profile</a>
+        <div class = "form-group row"><a href="/profile/${userChannel.id}/edit" class="btn btn-dark">Edit Profile</a></div>
         </#if>
+
     </div>
+
 </div>
 
 

@@ -10,7 +10,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -25,6 +28,9 @@ public class UserService implements UserDetailsService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    FileSaver fileSaver;
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
@@ -115,8 +121,14 @@ public class UserService implements UserDetailsService {
         userRepo.save(user);
     }
 
-    public void updateProfile(User user, String password, String email) {
+    public void updateProfile(User user, String username, String password, String email, MultipartFile avatar) throws IOException {
 
+        //обновление имени
+        String name = user.getUsername();
+        boolean isNameChanged = (username != null && !name.equals(username));
+        if(isNameChanged)user.setUsername(username);
+
+        //обновление почты
         String userEmail = user.getEmail();
         boolean isEmailChanged = (email != null && !email.equals(userEmail)) || (email != null && !userEmail.equals(email));
 
@@ -127,8 +139,19 @@ public class UserService implements UserDetailsService {
             }
         }
 
+        //обновление пароля
         if (!StringUtils.isEmpty(password)) {
             user.setPassword(passwordEncoder.encode(password));
+        }
+
+        //обновление аватара
+        if(avatar!=null){
+            String userPathAvatar = user.getAvatar();
+            if(userPathAvatar!=null) {
+                File oldAvatar = new File(userPathAvatar);
+                oldAvatar.delete();
+            }
+            fileSaver.saveFile(user,avatar);
         }
 
         userRepo.save(user);
