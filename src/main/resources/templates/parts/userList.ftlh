@@ -15,7 +15,7 @@
             <th>Id</th>
             <th>Avatar</th>
             <th>Name</th>
-            <#if isAdmin??><th>Role</th></#if>
+            <#if isAdmin == true><th>Role</th></#if>
             <th></th>
         </tr>
     </thead>
@@ -28,7 +28,7 @@
 
                 <td>${user.username}</td>
 
-                <#if isAdmin??>
+                <#if isAdmin == true>
                     <td><#list user.roles as role>${role}<#sep>, </#list></td>
                     <td><a href = "/user/${user.id}" class = "btn btn-dark">edit</a></td>
                 <#else>

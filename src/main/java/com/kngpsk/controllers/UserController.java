@@ -12,13 +12,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/user")
 public class UserController {
 
     @Autowired
     UserService userService;
 
-    @GetMapping
+    @GetMapping("/user")
     @PreAuthorize("hasAuthority('ADMIN')")
     public String userList(Model model){
         model.addAttribute("users",userService.findAll());
@@ -26,7 +25,7 @@ public class UserController {
         return "userList";
     }
 
-    @GetMapping("{user}")
+    @GetMapping("/user/{user}")
     @PreAuthorize("hasAuthority('ADMIN')")
     public String userEditForm(@PathVariable User user, Model model){
         model.addAttribute("user",user);
@@ -34,7 +33,7 @@ public class UserController {
         return "userEdit";
     }
 
-    @PostMapping
+    @PostMapping("/user")
     @PreAuthorize("hasAuthority('ADMIN')")
     public String userSave(@RequestParam String username,
                            @RequestParam Map<String,String> form,
@@ -44,5 +43,12 @@ public class UserController {
         return "redirect:/user";
     }
 
+    @GetMapping("/control-user")
+    @PreAuthorize("hasAuthority('MODERATOR')")
+    public String userListModer(Model model){
+        model.addAttribute("users",userService.findUsers());
+        model.addAttribute("isAdmin",false);
+        return "userList";
+    }
 
 }
