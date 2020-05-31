@@ -21,8 +21,26 @@
       </#if>
 
       <#if isAdmin>
-        <li class="nav-item">
-            <a class="nav-link" href="/user">User List</a>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                ADMIN
+            </a>
+            <div class="dropdown-menu bg-success" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item bg-success" href="/user">User List</a>
+            </div>
+        </li>
+      </#if>
+
+      <#if isModerator>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                MODERATOR
+            </a>
+            <div class="dropdown-menu bg-success" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item bg-success" href="#">Control Users</a>
+                <a class="dropdown-item bg-success" href="#">My Added News</a>
+                <a class="dropdown-item bg-success" href="#">Add News</a>
+            </div>
         </li>
       </#if>
 
