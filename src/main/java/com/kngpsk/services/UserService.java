@@ -103,6 +103,17 @@ public class UserService implements UserDetailsService {
         return userRepo.findAll();
     }
 
+    public List<User> findUsers(){
+
+        List<User> listAll = userRepo.findAll();
+        List<User> retList = new ArrayList<>();
+        for(User user:listAll){
+            if(user.isAdmin() || user.isModerator() )continue;
+            else retList.add(user);
+        }
+        return retList;
+    }
+
     public void saveUser(User user, String username, Map<String, String> form) {
 
         user.getRoles().clear();
