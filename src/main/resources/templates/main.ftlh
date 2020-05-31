@@ -2,7 +2,7 @@
 
 <@c.page>
 
-<h1>Its main paige!</h1>
-<p>Добрый день, это стартовая страница))</p>
+<h1>KnigoPoisk - all books of the world!</h1>
+<h3>News:</h3>
 
 </@c.page>
