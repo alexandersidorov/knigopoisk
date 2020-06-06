@@ -1,5 +1,6 @@
 package com.kngpsk.domain;
 
+import com.kngpsk.other.FileSetter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -11,7 +12,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "usr")
-public class User implements UserDetails, Serializable {
+public class User implements UserDetails, Serializable, FileSetter {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -130,4 +131,7 @@ public class User implements UserDetails, Serializable {
     public boolean isEnabled() {
         return isActive();
     }
+
+    @Override
+    public void setFile(String filename) {setAvatar(filename);}
 }

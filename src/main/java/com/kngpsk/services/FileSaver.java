@@ -1,6 +1,7 @@
 package com.kngpsk.services;
 
 import com.kngpsk.domain.User;
+import com.kngpsk.other.FileSetter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,7 +19,7 @@ public class FileSaver {
     public String getUploadPath() {return uploadPath;}
     public void setUploadPath(String uploadPath) {this.uploadPath = uploadPath;}
 
-    public void saveFile(User user, MultipartFile file) throws IOException {
+    public void saveFile(FileSetter fileSetter, MultipartFile file) throws IOException {
         if (file != null && !file.getOriginalFilename().isEmpty()) {
             File uploadDir = new File(uploadPath);
 
@@ -31,7 +32,8 @@ public class FileSaver {
 
             file.transferTo(new File(uploadPath + "/" + resultFilename));
 
-            user.setAvatar(resultFilename);
+            fileSetter.setFile(resultFilename);
+            //user.setAvatar(resultFilename);
         }
     }
 }
