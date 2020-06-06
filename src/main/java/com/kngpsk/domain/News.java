@@ -17,13 +17,13 @@ public class News implements FileSetter, Serializable,Comparable<News> {
     private User author;
 
     private String head;
-    private String headpic;
+    private String headPic;
     private String text;
 
     public News(User author, String head, String headpic, String text) {
         this.author = author;
         this.head = head;
-        this.headpic = headpic;
+        this.headPic = headpic;
         this.text = text;
     }
 
@@ -36,8 +36,8 @@ public class News implements FileSetter, Serializable,Comparable<News> {
     public String getHead() {return head;}
     public void setHead(String head) {this.head = head;}
 
-    public String getHeadpic() {return headpic;}
-    public void setHeadpic(String headpic) {this.headpic = headpic;}
+    public String getHeadpic() {return headPic;}
+    public void setHeadpic(String headpic) {this.headPic = headpic;}
 
     public String getText() {return text;}
     public void setText(String text) {this.text = text;}
