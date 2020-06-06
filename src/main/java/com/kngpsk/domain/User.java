@@ -36,8 +36,8 @@ public class User implements UserDetails, Serializable, FileSetter {
     @Enumerated(EnumType.STRING)
     Set<Role> roles;
 
-//    @OneToMany(mappedBy = "autor",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-//    private Set<Person> persons;
+    @OneToMany(mappedBy = "author",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private Set<News> news;
 
 //    @ManyToMany
 //    @JoinTable(
