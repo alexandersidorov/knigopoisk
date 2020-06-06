@@ -9,9 +9,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
-//@Service
+@Service
 public class FileSaver {
 
+    @Value("${upload.path}")
     private String uploadPath;
 
     public String getUploadPath() {return uploadPath;}

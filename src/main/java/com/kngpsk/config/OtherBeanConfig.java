@@ -1,4 +1,4 @@
-package com.kngpsk.config;
+/*package com.kngpsk.config;
 
 import com.kngpsk.services.FileSaver;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,3 +18,4 @@ public class OtherBeanConfig {
         return fileSaver;
     }
 }
+*/
