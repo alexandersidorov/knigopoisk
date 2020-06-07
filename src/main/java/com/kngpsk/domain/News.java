@@ -20,12 +20,14 @@ public class News implements FileSetter, Serializable,Comparable<News> {
     private String headPic;
     private String text;
 
-    public News(User author, String head, String headpic, String text) {
+    public News(User author, String head, String headPic, String text) {
         this.author = author;
         this.head = head;
-        this.headPic = headpic;
+        this.headPic = headPic;
         this.text = text;
     }
+
+    public News(){}
 
     public long getId() {return id;}
     public void setId(long id) {this.id = id;}
@@ -36,15 +38,15 @@ public class News implements FileSetter, Serializable,Comparable<News> {
     public String getHead() {return head;}
     public void setHead(String head) {this.head = head;}
 
-    public String getHeadpic() {return headPic;}
-    public void setHeadpic(String headpic) {this.headPic = headpic;}
+    public String getHeadPic() {return headPic;}
+    public void setHeadPic(String headPic) {this.headPic = headPic;}
 
     public String getText() {return text;}
     public void setText(String text) {this.text = text;}
 
     @Override
     public void setFile(String filename) {
-        setHeadpic(filename);
+        setHeadPic(filename);
     }
 
     @Override

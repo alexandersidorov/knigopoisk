@@ -33,7 +33,7 @@ public class NewsService {
         return newsList;
     }
 
-    public boolean addNews(News news ){
+    public boolean addNews(News news){
         newsRepo.save(news);
         return true;
     }
@@ -52,7 +52,7 @@ public class NewsService {
 
         //обновление главной картинки
         if(headPic!=null){
-            String headPicOldPath = news.getHeadpic();
+            String headPicOldPath = news.getHeadPic();
             if(headPicOldPath!=null) {
                 File oldPic = new File(headPicOldPath);
                 oldPic.delete();
