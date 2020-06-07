@@ -39,7 +39,7 @@
             <div class="dropdown-menu bg-success" aria-labelledby="navbarDropdown">
                 <a class="dropdown-item bg-success" href="/control-user">Control Users</a>
                 <a class="dropdown-item bg-success" href="#">My Added News</a>
-                <a class="dropdown-item bg-success" href="#">Add News</a>
+                <a class="dropdown-item bg-success" href="/addNews">Add News</a>
             </div>
         </li>
       </#if>
