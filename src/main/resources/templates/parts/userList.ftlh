@@ -24,7 +24,11 @@
             <tr>
                 <td>${user.id}</td>
 
-                <td><div class = "img-style" style="background-image: url(/img/${user.avatar})"></div></td>
+                <#if user.avatar??>
+                    <td><div class = "img-style" style="background-image: url(/img/${user.avatar})"></div></td>
+                <#else>
+                    <td><div class = "img-style" style="background-image: url(/img/default_avatar.jpg)"></div></td>
+                </#if>
 
                 <td>${user.username}</td>
 
