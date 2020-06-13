@@ -64,6 +64,6 @@ public class News implements FileSetter, Serializable,Comparable<News> {
 
     @Override
     public int compareTo(News news) {
-        return (int) (Long.compare(id,news.getId()));
+        return Long.compare(id,news.getId());
     }
 }
