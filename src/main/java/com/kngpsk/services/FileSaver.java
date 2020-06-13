@@ -33,7 +33,6 @@ public class FileSaver {
             file.transferTo(new File(uploadPath + "/" + resultFilename));
 
             fileSetter.setFile(resultFilename);
-            //user.setAvatar(resultFilename);
         }
     }
 }

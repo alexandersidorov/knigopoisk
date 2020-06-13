@@ -36,14 +36,9 @@ public class NewsController {
                            @RequestParam("headPic") MultipartFile headPic,
                            Model model){
 
-        News news = new News();
-        news.setText(text);
-        news.setHead(head);
-        news.setAuthor(user);
-
         StringBuilder message = new StringBuilder();
         try{
-            newsService.updateNews(news,head,text,headPic);
+            newsService.addNews(user,head,text,headPic);
         }catch (IOException exception){
             message.append("Error with load HeadPic!");
         }

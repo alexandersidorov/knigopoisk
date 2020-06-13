@@ -38,6 +38,18 @@ public class NewsService {
         return true;
     }
 
+    public boolean addNews(User author,String head,String text,MultipartFile headPic)throws IOException{
+        News news = new News();
+        news.setAuthor(author);
+        news.setHead(head);
+        news.setText(text);
+        fileSaver.saveFile(news,headPic);
+
+        addNews(news);
+
+        return true;
+    }
+
     public boolean updateNews(News news, String head, String text, MultipartFile headPic) throws IOException {
 
         //обновление заголовка
