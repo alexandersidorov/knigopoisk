@@ -3,6 +3,7 @@ package com.kngpsk.controllers;
 import com.kngpsk.domain.News;
 import com.kngpsk.domain.User;
 import com.kngpsk.services.NewsService;
+import com.kngpsk.services.ParagraphService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -22,6 +23,9 @@ public class NewsController {
     @Autowired
     NewsService newsService;
 
+    @Autowired
+    ParagraphService paragraphService;
+
     @GetMapping("/addNews")
     @PreAuthorize("hasAuthority('MODERATOR')")
     public String addNewsShow(){
@@ -34,14 +38,22 @@ public class NewsController {
                            @RequestParam("head") String head,
                            @RequestParam("text") String text,
                            @RequestParam("headPic") MultipartFile headPic,
+                           @RequestParam("ParText1") String text1,
+                           @RequestParam("ParPic1") MultipartFile pic1,
+                           @RequestParam("ParText2") String text2,
+                           @RequestParam("ParPic2") MultipartFile pic2,
                            Model model){
+
 
         StringBuilder message = new StringBuilder();
         try{
-            newsService.addNews(user,head,text,headPic);
+            News addedNews = newsService.addNews(user,head,text,headPic);
+            paragraphService.addParagraph(addedNews,text1,pic1);
+            paragraphService.addParagraph(addedNews,text2,pic2);
         }catch (IOException exception){
-            message.append("Error with load HeadPic!");
+            message.append("Error with load Pic!");
         }
+
         model.addAttribute("message",message.toString());
 
         return "redirect:/myAddNews";

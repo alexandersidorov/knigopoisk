@@ -1,6 +1,7 @@
 package com.kngpsk.services;
 
 import com.kngpsk.domain.News;
+import com.kngpsk.domain.Paragraph;
 import com.kngpsk.domain.User;
 import com.kngpsk.repos.NewsRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class NewsService {
@@ -38,19 +40,20 @@ public class NewsService {
         return true;
     }
 
-    public boolean addNews(User author,String head,String text,MultipartFile headPic)throws IOException{
+    public News addNews(User author, String head, String text, MultipartFile headPic/*, Set<Paragraph>paragraphs*/)throws IOException{
         News news = new News();
         news.setAuthor(author);
         news.setHead(head);
         news.setText(text);
+        //news.setParagraphs(paragraphs);
         fileSaver.saveFile(news,headPic);
 
         addNews(news);
 
-        return true;
+        return news;
     }
 
-    public boolean updateNews(News news, String head, String text, MultipartFile headPic) throws IOException {
+    public boolean updateNews(News news, String head, String text, MultipartFile headPic/*,Set<Paragraph>paragraphs*/) throws IOException {
 
         //обновление заголовка
         String headOld = news.getHead();
@@ -71,6 +74,8 @@ public class NewsService {
             }
             fileSaver.saveFile(news,headPic);
         }
+
+        //news.setParagraphs(paragraphs);
 
         newsRepo.save(news);
 

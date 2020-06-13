@@ -1,16 +1,42 @@
 <#import "parts/common.ftlh" as c>
 
+<style>
+    .img-style{
+        width:300px;
+        height:300px;
+        background-position: center;
+        -webkit-background-size: cover;
+        background-size: cover;
+        margin: 0 auto;
+    }
+</style>
+
 <@c.page>
 
 <div class="card text-center my-3">
 
-    <#if news.headPic??>
-            <img src = "/img/${news.headPic}" class = "card-img-top">
-    </#if>
-    <div class="card-body">
+    <div class = "card-header text-muted">
         <h5 class="card-title">${news.head}</h5>
-        <p class="card-text">${news.text}</p>
     </div>
+
+    <#if news.headPic??>
+        <div class = "card mt-3 mb-3 ml-5 mr-5">
+            <img src = "/img/${news.headPic}" class = "card-img-top">
+        </div>
+    </#if>
+
+    <div class="card-body">
+        <p class="card-text">${news.text}</p>
+        <#list news.paragraphs as paragraph>
+            <#if paragraph.pic??>
+                <div class = "card mt-3 mb-3 ml-5 mr-5">
+                    <img src = "/img/${paragraph.pic}" class = "card-img-top">
+                </div>
+                <p class="card-text">${paragraph.text}</p>
+            </#if>
+        </#list>
+    </div>
+
     <div class = "card-footer text-muted">
         <a href = "/">Back</a>
     </div>

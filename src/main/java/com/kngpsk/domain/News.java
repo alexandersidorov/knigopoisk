@@ -5,6 +5,8 @@ import com.kngpsk.other.FileSetter;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.Set;
+import java.util.TreeSet;
 
 @Entity
 public class News implements FileSetter, Serializable,Comparable<News> {
@@ -19,6 +21,9 @@ public class News implements FileSetter, Serializable,Comparable<News> {
     private String head;
     private String headPic;
     private String text;
+
+    @OneToMany(mappedBy = "news",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private Set<Paragraph> paragraphs = new TreeSet<>();
 
     public News(User author, String head, String headPic, String text) {
         this.author = author;
@@ -43,6 +48,9 @@ public class News implements FileSetter, Serializable,Comparable<News> {
 
     public String getText() {return text;}
     public void setText(String text) {this.text = text;}
+
+    public Set<Paragraph> getParagraphs() {return paragraphs;}
+    public void setParagraphs(Set<Paragraph> paragraphs) {this.paragraphs = paragraphs;}
 
     @Override
     public void setFile(String filename) {
