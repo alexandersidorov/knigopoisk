@@ -10,7 +10,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class ParagraphService {
@@ -30,10 +29,11 @@ public class ParagraphService {
         return true;
     }
 
-    public boolean addParagraph(News news,String text,MultipartFile pic)throws IOException {
+    public boolean addParagraph(News news,String text,int num,MultipartFile pic)throws IOException {
         Paragraph paragraph = new Paragraph();
         paragraph.setNews(news);
         paragraph.setText(text);
+        paragraph.setNum(num);
         fileSaver.saveFile(paragraph,pic);
 
         addParagraph(paragraph);
@@ -63,4 +63,8 @@ public class ParagraphService {
         return true;
     }
 
+    public boolean deleteParagraph(Paragraph paragraph){
+        paragraphRepo.delete(paragraph);
+        return true;
+    }
 }

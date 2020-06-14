@@ -26,7 +26,7 @@
     </#if>
 
     <div class="card-body">
-        <p class="card-text">${news.text}</p>
+        <p class = "card-text">${news.text}</p>
         <#list news.paragraphs as paragraph>
             <#if paragraph.pic??>
                 <div class = "card mt-3 mb-3 ml-5 mr-5">
@@ -39,6 +39,10 @@
 
     <div class = "card-footer text-muted">
         <a href = "/">Back</a>
+        <#if isUsersNews == true>
+            <td><a href = "/editNews/${news.id}" class = "btn btn-dark">edit</a></td>
+            <td><a href = "/deleteNews/${news.id}" class = "btn btn-dark">delete</a></td>
+        </#if>
     </div>
 
 </div>

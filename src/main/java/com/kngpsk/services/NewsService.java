@@ -81,4 +81,9 @@ public class NewsService {
 
         return true;
     }
+
+    public boolean deleteNews(News news){
+        newsRepo.delete(news);
+        return true;
+    }
 }

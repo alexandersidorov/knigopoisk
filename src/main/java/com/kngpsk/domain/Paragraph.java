@@ -14,6 +14,7 @@ public class Paragraph implements FileSetter, Serializable, Comparable<Paragraph
     private long id;
     private String pic;
     private String text;
+    private int num;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "news_id")
@@ -32,6 +33,9 @@ public class Paragraph implements FileSetter, Serializable, Comparable<Paragraph
 
     public News getNews() {return news;}
     public void setNews(News news) {this.news = news;}
+
+    public int getNum() {return num;}
+    public void setNum(int num) {this.num = num;}
 
     @Override
     public boolean equals(Object o) {

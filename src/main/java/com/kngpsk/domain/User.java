@@ -85,9 +85,6 @@ public class User implements UserDetails, Serializable, FileSetter {
     public String getAvatar() {return avatar;}
     public void setAvatar(String avatar) {this.avatar = avatar;}
 
-    //    public Set<Person> getPersons() {return persons;}
-//    public void setPersons(Set<Person> persons) {this.persons = persons;}
-
 //    public Set<User> getSubscribers() {return subscribers;}
 //    public void setSubscribers(Set<User> subscribers) {this.subscribers = subscribers;}
 //
