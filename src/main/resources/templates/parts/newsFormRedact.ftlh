@@ -4,7 +4,18 @@
     <div class="form-group row">
         <label class="col-sm-2 col-form-label">Head:</label>
         <div class="col-sm-6">
-            <input type="text" name="head" class="form-control" placeholder="head of news" <#if editNews??>value="${editNews.head}"</#if>   />
+            <input type="text" name="head" class="form-control ${(headError??)?string('is-invalid', '')}"
+            value =
+            <#if editNews??>"${editNews.head}"
+            <#else> <#if news??>"${news.head}"<#else>""</#if>
+            </#if>
+            placeholder="Add head" />
+
+            <#if headError??>
+                <div class="invalid-feedback">
+                ${headError}
+                </div>
+            </#if>
         </div>
     </div>
 
@@ -12,8 +23,8 @@
         <label class="col-sm-2 col-form-label">Head Picture</label>
         <div class = "col-sm-6">
         <div class = "custom-file">
-            <input type = "file" name = "headPic" id = "headPicFile">
-            <label class = "custom-file-label" for="headPicFile">Head Picture</label>
+            <input type = "file" name = "MainPic" id = "mainPicFile">
+            <label class = "custom-file-label" for="mainPicFile">Head Picture</label>
         </div>
         </div>
     </div>
@@ -21,7 +32,16 @@
     <div class="form-group row">
         <label class="col-sm-2 col-form-label">Text:</label>
         <div class="col-sm-6">
-            <textarea class="form-control" name = "text" aria-label="Text" > <#if editNews??>${editNews.text}</#if> </textarea>
+            <textarea class="form-control ${(textError??)?string('is-invalid', '')}" name = "text" aria-label="Text">
+             <#if editNews??>${editNews.text}
+             <#else> <#if news??>${news.text}</#if>
+             </#if>
+            </textarea>
+            <#if textError??>
+                <div class="invalid-feedback">
+                ${textError}
+                </div>
+            </#if>
         </div>
     </div>
 

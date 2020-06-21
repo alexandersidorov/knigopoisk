@@ -5,17 +5,21 @@ import com.kngpsk.domain.Paragraph;
 import com.kngpsk.domain.User;
 import com.kngpsk.services.NewsService;
 import com.kngpsk.services.ParagraphService;
+import com.kngpsk.utils.ControllerUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.*;
 
@@ -37,28 +41,48 @@ public class NewsController {
     @PostMapping("/addNews")
     @PreAuthorize("hasAuthority('MODERATOR')")
     public String newsSave(@AuthenticationPrincipal User user,
-                           @RequestParam("head") String head,
-                           @RequestParam("text") String text,
-                           @RequestParam("headPic") MultipartFile headPic,
-                           @RequestParam("ParText1") String text1,
+                           @Valid News news,
+                           BindingResult bindingResult,
+                           Model model,
+                           @RequestParam("MainPic") MultipartFile pic,
+                           @RequestParam(value = "ParText1", required = false,defaultValue = "") String text1,
                            @RequestParam("ParPic1") MultipartFile pic1,
-                           @RequestParam("ParText2") String text2,
-                           @RequestParam("ParPic2") MultipartFile pic2,
-                           Model model){
+                           @RequestParam(value = "ParText2",required = false,defaultValue = "") String text2,
+                           @RequestParam("ParPic2") MultipartFile pic2){
 
 
-        StringBuilder message = new StringBuilder();
-        try{
-            News addedNews = newsService.addNews(user,head,text,headPic);
-            paragraphService.addParagraph(addedNews,text1,1,pic1);
-            paragraphService.addParagraph(addedNews,text2,2,pic2);
-        }catch (IOException exception){
-            message.append("Error with load Pic!");
+        news.setAuthor(user);
+
+        boolean headIsEmpty = StringUtils.isEmpty(news.getHead());
+        if(headIsEmpty)model.addAttribute("headError","Head is Empty");
+
+        boolean textIsEmpty = StringUtils.isEmpty(news.getText());
+        if(headIsEmpty)model.addAttribute("textError","Text is Empty");
+
+        if(headIsEmpty || textIsEmpty || bindingResult.hasErrors()){
+            Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
+
+            model.addAttribute("news", news);
+
+            model.mergeAttributes(errorsMap);
+
+            return "newsAdd";
+
+        }else {
+            StringBuilder message = new StringBuilder();
+            try {
+                //News addedNews = newsService.addNews(user,head,text,headPic);
+                News addedNews = newsService.updateNews(news,news.getHead(),news.getText(),pic);
+                paragraphService.addParagraph(addedNews, text1, 1, pic1);
+                paragraphService.addParagraph(addedNews, text2, 2, pic2);
+            } catch (IOException exception) {
+                message.append("Error with load Pic!");
+            }
+
+            model.addAttribute("message", message.toString());
+
+            return "redirect:/myAddNews";
         }
-
-        model.addAttribute("message",message.toString());
-
-        return "redirect:/myAddNews";
     }
 
     @GetMapping("/editNews/{news}")
@@ -73,31 +97,41 @@ public class NewsController {
     @PreAuthorize("hasAuthority('MODERATOR')")
     public String editNewsSave(@AuthenticationPrincipal User user,
                            @PathVariable News news,
+                           Model model,
                            @RequestParam("head") String head,
                            @RequestParam("text") String text,
-                           @RequestParam("headPic") MultipartFile headPic,
+                           @RequestParam("MainPic") MultipartFile pic,
                            @RequestParam("ParText1") String text1,
                            @RequestParam("ParPic1") MultipartFile pic1,
                            @RequestParam("ParText2") String text2,
-                           @RequestParam("ParPic2") MultipartFile pic2,
-                           Model model){
+                           @RequestParam("ParPic2") MultipartFile pic2){
 
 
-        StringBuilder message = new StringBuilder();
-        try{
+        boolean headIsEmpty = StringUtils.isEmpty(head);
+        if(headIsEmpty)model.addAttribute("headError","Head is Empty");
 
-            newsService.updateNews(news,head,text,headPic);
-            List<Paragraph> paragraphs = new ArrayList<>(news.getParagraphs());
-            paragraphService.updateParagraph(paragraphs.get(0),text1,pic1);
-            paragraphService.updateParagraph(paragraphs.get(1),text2,pic2);
+        boolean textIsEmpty = StringUtils.isEmpty(text);
+        if(textIsEmpty)model.addAttribute("textError","Text is Empty");
 
-        }catch (IOException exception){
-            message.append("Error with load Pic!");
+        if(headIsEmpty || textIsEmpty){
+            model.addAttribute("editNews", news);
+            return "newsAdd";
+        }else {
+            StringBuilder message = new StringBuilder();
+            try {
+                newsService.updateNews(news, head, text, pic);
+                List<Paragraph> paragraphs = new ArrayList<>(news.getParagraphs());
+                paragraphService.updateParagraph(paragraphs.get(0), text1, pic1);
+                paragraphService.updateParagraph(paragraphs.get(1), text2, pic2);
+
+            } catch (IOException exception) {
+                message.append("Error with load Pic!");
+            }
+
+            model.addAttribute("message", message.toString());
+
+            return "redirect:/myAddNews";
         }
-
-        model.addAttribute("message",message.toString());
-
-        return "redirect:/myAddNews";
     }
 
     @GetMapping ("/deleteNews/{news}")

@@ -3,6 +3,7 @@ package com.kngpsk.domain;
 import com.kngpsk.other.FileSetter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.Set;
@@ -18,17 +19,20 @@ public class News implements FileSetter, Serializable,Comparable<News> {
     @JoinColumn(name = "user_id")
     private User author;
 
+    @NotBlank(message = "Fill the head.")
     private String head;
-    private String headPic;
+
+    @NotBlank(message = "Fill the text.")
     private String text;
+
+    private String headPic;
 
     @OneToMany(mappedBy = "news",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private Set<Paragraph> paragraphs = new TreeSet<>();
 
-    public News(User author, String head, String headPic, String text) {
+    public News(User author, String head, String text) {
         this.author = author;
         this.head = head;
-        this.headPic = headPic;
         this.text = text;
     }
 
