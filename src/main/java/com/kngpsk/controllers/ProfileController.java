@@ -2,17 +2,22 @@ package com.kngpsk.controllers;
 
 import com.kngpsk.domain.User;
 import com.kngpsk.services.UserService;
+import com.kngpsk.utils.ControllerUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.io.IOException;
+import java.util.Map;
 
 @Controller
 public class ProfileController {
@@ -43,16 +48,36 @@ public class ProfileController {
     //подтверждение редактирования профиля
     @PostMapping("/profile/{user}/edit")
     public String updateProfile(@AuthenticationPrincipal User user,
-                                @RequestParam("username") String username,
-                                @RequestParam("password") String password,
-                                @RequestParam("email") String email,
-                                @RequestParam("avatar") MultipartFile avatar,
-                                Model model){
+                                @Valid User saveUser,
+                                BindingResult bindingResult,
+                                Model model,
+                                @RequestParam("MainPic") MultipartFile pic,
+                                @RequestParam("password2") String passwordConfirm
+                                ){
 
+        boolean isPassErr = saveUser.getPassword() != null && !saveUser.getPassword().equals(passwordConfirm);
+        if (isPassErr) {
+            model.addAttribute("passwordError", "Passwords are different!");
+        }
+
+        Map<String, String> errors = ControllerUtils.getErrors(bindingResult);
+        if(errors.size()>0){
+            //В случае редактирования профиля, допускается наличие незаполненного поля пароля
+            if(errors.containsKey("passwordError"))errors.remove("passwordError");
+        }
+
+        if (isPassErr || errors.size()>0) {
+
+            model.mergeAttributes(errors);
+
+            model.addAttribute("user",saveUser);
+
+            return "profileEdit";
+        }
 
         StringBuilder message = new StringBuilder();
         try{
-            userService.updateProfile(user,username,password,email,avatar);
+            userService.updateProfile(user,saveUser.getUsername(), saveUser.getPassword(), saveUser.getEmail(), pic);
         }catch (IOException exception){
             message.append("Error with load avatar.");
         }

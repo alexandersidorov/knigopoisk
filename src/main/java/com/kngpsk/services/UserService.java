@@ -145,6 +145,7 @@ public class UserService implements UserDetailsService {
 
         if (isEmailChanged) {
             user.setEmail(email);
+            user.setActive(false);
             if (!StringUtils.isEmpty(email)) {
                 user.setActivationCode(UUID.randomUUID().toString());
             }
