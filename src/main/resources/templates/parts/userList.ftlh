@@ -30,7 +30,7 @@
                     <td><div class = "img-style" style="background-image: url(/img/default_avatar.jpg)"></div></td>
                 </#if>
 
-                <td><a href="/profile/${user.id}">${user.username()}</a></td>
+                <td><a href="/profile/${user.id}">${user.username}</a></td>
 
                 <#if isAdmin == true>
                     <td><#list user.roles as role>${role}<#sep>, </#list></td>

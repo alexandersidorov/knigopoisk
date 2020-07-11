@@ -6,7 +6,7 @@
 <ul class="list-group">
     <#list users as user>
         <li class="list-group-item">
-            <a href="/profile/${user.id}">${user.username()}</a>
+            <a href="/profile/${user.id}">${user.username}</a>
         </li>
     </#list>
 </ul>
