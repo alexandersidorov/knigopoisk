@@ -115,15 +115,17 @@ public class ProfileController {
             @PathVariable User user,
             @PathVariable String type
     ) {
-        model.addAttribute("userChannel", user);
-        model.addAttribute("type", type);
 
+        model.addAttribute("caption",type);
         if ("subscriptions".equals(type)) {
             model.addAttribute("users", user.getSubscriptions());
         } else {
             model.addAttribute("users", user.getSubscribers());
         }
 
-        return "subscriptions";
+        model.addAttribute("isAdmin",false);
+        model.addAttribute("isModer",false);
+
+        return "userList";
     }
 }

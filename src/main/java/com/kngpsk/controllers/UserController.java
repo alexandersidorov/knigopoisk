@@ -20,8 +20,10 @@ public class UserController {
     @GetMapping("/user")
     @PreAuthorize("hasAuthority('ADMIN')")
     public String userList(Model model){
+        model.addAttribute("caption","List of user");
         model.addAttribute("users",userService.findAll());
         model.addAttribute("isAdmin",true);
+        model.addAttribute("isModer",false);
         return "userList";
     }
 
@@ -46,8 +48,10 @@ public class UserController {
     @GetMapping("/control-user")
     @PreAuthorize("hasAuthority('MODERATOR')")
     public String userListModer(Model model){
+        model.addAttribute("caption","List of user");
         model.addAttribute("users",userService.findUsers());
         model.addAttribute("isAdmin",false);
+        model.addAttribute("isModer",true);
         return "userList";
     }
 
