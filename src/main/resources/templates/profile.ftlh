@@ -16,34 +16,56 @@ ${message}
             </#if>
 
             <div class = "card-body">
+
                 <h3 class = "card-text">${userChannel.username}</h3>
+
             </div>
         </div>
     </div>
 
     <div class = "col-sm-5">
 
-        <div class = "form-group row">
-            <label class="col-sm-2 col-form-label">Email:</label>
-            <label class="col-sm-5 col-form-label">${userChannel.email}</label>
-        </div>
+        <div class = "card">
 
-        <#if isCurrentUser>
-            <div class = "form-group row"><a href="/profile/${userChannel.id}/edit" class="btn btn-dark">Edit Profile</a></div>
-        <#else>
-            <div class = "form-group row">
-                <#if isSubscriber>
-                    <a class="btn btn-danger" href="/user/unsubscribe/${userChannel.id}">Unsubscribe</a>
-                <#else>
-                    <a class="btn btn-success" href="/user/subscribe/${userChannel.id}">Subscribe</a>
-                </#if>
+            <div class = "card-body">
+
+                <div>
+                    <td>Email:</td>
+                    <td>${userChannel.email}</td>
+                </div>
+
+                <div>
+                    <td>Subscriptions:</td>
+                    <td><a href="/user/subscriptions/${userChannel.id}/list">${subscriptionsCount}</a></td>
+                </div>
+
+                <div>
+                    <td>Subscribers:</label>
+                    <td><a href="/user/subscribers/${userChannel.id}/list">${subscribersCount}</a></td>
+                </div>
+
             </div>
-        </#if>
+
+            <div class = "card-footer text-muted">
+
+                <#if isCurrentUser>
+                    <div class = "form-group row"><a href="/profile/${userChannel.id}/edit" class="btn btn-dark">Edit Profile</a></div>
+                <#else>
+                    <div class = "form-group row">
+                        <#if isSubscriber>
+                            <a class="btn btn-danger" href="/user/unsubscribe/${userChannel.id}">Unsubscribe</a>
+                        <#else>
+                            <a class="btn btn-success" href="/user/subscribe/${userChannel.id}">Subscribe</a>
+                        </#if>
+                    </div>
+                </#if>
+
+            </div>
+
+        </div>
 
     </div>
 
 </div>
-
-
 
 </@c.page>
