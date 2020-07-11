@@ -32,6 +32,9 @@ public class ProfileController {
                               Model model){
         model.addAttribute("userChannel",user);
         model.addAttribute("isCurrentUser",user.equals(currentUser));
+        model.addAttribute("subscriptionsCount", user.getSubscriptions().size());
+        model.addAttribute("subscribersCount", user.getSubscribers().size());
+        model.addAttribute("isSubscriber", user.getSubscribers().contains(currentUser));
 
         return "profile";
     }
