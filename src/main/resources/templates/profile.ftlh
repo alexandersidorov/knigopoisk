@@ -36,12 +36,12 @@ ${message}
 
                 <div>
                     <td>Subscriptions:</td>
-                    <td><a href="/user/subscriptions/${userChannel.id}/list">${subscriptionsCount}</a></td>
+                    <td><a href="/subscriptions/${userChannel.id}/list">${subscriptionsCount}</a></td>
                 </div>
 
                 <div>
                     <td>Subscribers:</label>
-                    <td><a href="/user/subscribers/${userChannel.id}/list">${subscribersCount}</a></td>
+                    <td><a href="/subscribers/${userChannel.id}/list">${subscribersCount}</a></td>
                 </div>
 
             </div>
@@ -53,9 +53,9 @@ ${message}
                 <#else>
                     <div class = "form-group row">
                         <#if isSubscriber>
-                            <a class="btn btn-danger" href="/user/unsubscribe/${userChannel.id}">Unsubscribe</a>
+                            <a class="btn btn-danger" href="/unsubscribe/${userChannel.id}">Unsubscribe</a>
                         <#else>
-                            <a class="btn btn-success" href="/user/subscribe/${userChannel.id}">Subscribe</a>
+                            <a class="btn btn-success" href="/subscribe/${userChannel.id}">Subscribe</a>
                         </#if>
                     </div>
                 </#if>
