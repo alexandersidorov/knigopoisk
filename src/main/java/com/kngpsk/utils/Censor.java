@@ -30,6 +30,8 @@ public class Censor {
     public List<String> getControlStrings() {return controlStrings;}
     public void setControlStrings(List<String> controlStrings) {this.controlStrings = controlStrings;}
 
+
+
     //кол-во вхождений подстроки в строку
     private int countInStr(String str,String strIn){
 
@@ -70,13 +72,15 @@ public class Censor {
         }
     }
 
+    //очищает список запрещенных слов
+    //после этого метода необходимо будет заново загрузить запрещенные слова
     public void clearBadWords(){
         badWords.clear();
         badWords = null;
     }
 
     //формирует map с ошибками
-    public boolean  getErrors(){
+    public boolean getErrors(){
         errors.clear();
 
         try {
@@ -97,8 +101,8 @@ public class Censor {
         return ret;
     }
 
-    //вывод отчета
-    public void showErrorReport(){
+    //возврат отчета в текстовом виде
+    public String getErrorReport(){
 
         StringBuilder report = new StringBuilder();
         report.append("Report of Errors:\n");
@@ -110,7 +114,6 @@ public class Censor {
             }
         }
 
-        errors.clear();
-        System.out.println(report.toString());
+        return report.toString();
     }
 }
