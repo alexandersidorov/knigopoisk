@@ -5,6 +5,7 @@ import com.kngpsk.domain.Paragraph;
 import com.kngpsk.domain.User;
 import com.kngpsk.services.NewsService;
 import com.kngpsk.services.ParagraphService;
+import com.kngpsk.utils.censor.Censor;
 import com.kngpsk.utils.ControllerUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -58,6 +59,8 @@ public class NewsController {
 
         boolean textIsEmpty = StringUtils.isEmpty(news.getText());
         if(headIsEmpty)model.addAttribute("textError","Text is Empty");
+
+        Censor censor = new Censor();
 
         if(headIsEmpty || textIsEmpty || bindingResult.hasErrors()){
             Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
