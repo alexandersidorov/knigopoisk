@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class CensorReport {
 
-    public static String getFullErrorReport(Map<String,Integer>errors){
+    private static String getFullErrorReport(Map<String,Integer>errors){
 
         if (errors.size()==0)return "";
 
@@ -22,7 +22,7 @@ public class CensorReport {
         return report.toString();
     }
 
-    public static String getSmallErrorReport(Map<String,Integer>errors){
+    private static String getSmallErrorReport(Map<String,Integer>errors){
 
         if (errors.size()==0)return "";
 
@@ -38,14 +38,22 @@ public class CensorReport {
                 report.append(s);
             }
         }
-//        for(Map.Entry<String,Integer> entry:errors.entrySet()){
-//
-//            if(entry.getValue()>0){
-//                report.append(entry.getKey()+", ");
-//            }
-//        }
-//        report.append(".");
 
         return report.toString();
+    }
+
+    public static String getReport(Map<String,Integer>errors,ReportSize size){
+        String ret = null;
+        switch (size){
+            case Full:{
+                ret =  getFullErrorReport(errors);
+                break;
+            }
+            case Small:{
+                ret =  getSmallErrorReport(errors);
+                break;
+            }
+        }
+        return ret;
     }
 }

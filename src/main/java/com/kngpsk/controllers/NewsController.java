@@ -8,6 +8,7 @@ import com.kngpsk.services.ParagraphService;
 import com.kngpsk.utils.ControllerUtils;
 import com.kngpsk.utils.censor.Censor;
 import com.kngpsk.utils.censor.CensorReport;
+import com.kngpsk.utils.censor.ReportSize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -68,11 +69,11 @@ public class NewsController {
         List<String>forCensor = Arrays.asList(news.getHead().split("\n"));
         Map<String,Integer> res1 = censor.getErrors(forCensor);
         String report;
-        report = CensorReport.getSmallErrorReport(res1);
+        report = CensorReport.getReport(res1, ReportSize.Small);
 
         forCensor = Arrays.asList(news.getText().split("\n"));
         Map<String,Integer> res2 = censor.getErrors(forCensor);
-        report = CensorReport.getSmallErrorReport(res2);
+        report = CensorReport.getReport(res2, ReportSize.Full);
 
 
         if(headIsEmpty || textIsEmpty || bindingResult.hasErrors()){
