@@ -6,6 +6,7 @@ import com.kngpsk.domain.User;
 import com.kngpsk.services.NewsService;
 import com.kngpsk.services.ParagraphService;
 import com.kngpsk.utils.ControllerUtils;
+import com.kngpsk.utils.StringToList;
 import com.kngpsk.utils.censor.Censor;
 import com.kngpsk.utils.censor.CensorReport;
 import com.kngpsk.utils.censor.ReportSize;
@@ -66,14 +67,14 @@ public class NewsController {
         if(headIsEmpty)model.addAttribute("textError","Text is Empty");
 
         //проверка на цензуру
-        List<String>forCensor = Arrays.asList(news.getHead().split("\n"));
-        Map<String,Integer> res1 = censor.getErrors(forCensor);
+        List<String>forCensor = StringToList.getStringList(news.getHead());
+        Map<String,Integer> res = censor.getErrors(forCensor);
         String report;
-        report = CensorReport.getReport(res1, ReportSize.Small);
+        report = CensorReport.getReport(res, ReportSize.Small);
 
-        forCensor = Arrays.asList(news.getText().split("\n"));
-        Map<String,Integer> res2 = censor.getErrors(forCensor);
-        report = CensorReport.getReport(res2, ReportSize.Full);
+        forCensor = StringToList.getStringList(news.getText());
+        res = censor.getErrors(forCensor);
+        report = CensorReport.getReport(res, ReportSize.Small);
 
 
         if(headIsEmpty || textIsEmpty || bindingResult.hasErrors()){
