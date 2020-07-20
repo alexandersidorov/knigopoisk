@@ -5,8 +5,9 @@ import com.kngpsk.domain.Paragraph;
 import com.kngpsk.domain.User;
 import com.kngpsk.services.NewsService;
 import com.kngpsk.services.ParagraphService;
-import com.kngpsk.utils.censor.Censor;
 import com.kngpsk.utils.ControllerUtils;
+import com.kngpsk.utils.censor.Censor;
+import com.kngpsk.utils.censor.CensorReport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -32,6 +33,9 @@ public class NewsController {
 
     @Autowired
     ParagraphService paragraphService;
+
+    @Autowired
+    Censor censor;
 
     @GetMapping("/addNews")
     @PreAuthorize("hasAuthority('MODERATOR')")
@@ -60,7 +64,16 @@ public class NewsController {
         boolean textIsEmpty = StringUtils.isEmpty(news.getText());
         if(headIsEmpty)model.addAttribute("textError","Text is Empty");
 
-        Censor censor = new Censor();
+        //проверка на цензуру
+        List<String>forCensor = Arrays.asList(news.getHead().split("\n"));
+        Map<String,Integer> res1 = censor.getErrors(forCensor);
+        String report;
+        report = CensorReport.getSmallErrorReport(res1);
+
+        forCensor = Arrays.asList(news.getText().split("\n"));
+        Map<String,Integer> res2 = censor.getErrors(forCensor);
+        report = CensorReport.getSmallErrorReport(res2);
+
 
         if(headIsEmpty || textIsEmpty || bindingResult.hasErrors()){
             Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
@@ -74,7 +87,6 @@ public class NewsController {
         }else {
             StringBuilder message = new StringBuilder();
             try {
-                //News addedNews = newsService.addNews(user,head,text,headPic);
                 News addedNews = newsService.updateNews(news,news.getHead(),news.getText(),pic);
                 paragraphService.addParagraph(addedNews, text1, 1, pic1);
                 paragraphService.addParagraph(addedNews, text2, 2, pic2);
