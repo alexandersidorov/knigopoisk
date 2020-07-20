@@ -67,17 +67,27 @@ public class NewsController {
         if(headIsEmpty)model.addAttribute("textError","Text is Empty");
 
         //проверка на цензуру
-        List<String>forCensor = StringToList.getStringList(news.getHead());
-        Map<String,Integer> res = censor.getErrors(forCensor);
         String report;
+        boolean censorErrors = false;
+
+        //заголовок
+        Map<String,Integer> res = censor.getErrors(StringToList.getStringList(news.getHead()));
         report = CensorReport.getReport(res, ReportSize.Small);
+        if(!StringUtils.isEmpty(report)){
+            model.addAttribute("headCensorError",report);
+            censorErrors = true;
+        }
 
-        forCensor = StringToList.getStringList(news.getText());
-        res = censor.getErrors(forCensor);
+        //текст
+        res = censor.getErrors(StringToList.getStringList(news.getText()));
         report = CensorReport.getReport(res, ReportSize.Small);
+        if(!StringUtils.isEmpty(report)){
+            model.addAttribute("textCensorError",report);
+            censorErrors = true;
+        }
 
 
-        if(headIsEmpty || textIsEmpty || bindingResult.hasErrors()){
+        if(headIsEmpty || textIsEmpty || censorErrors || bindingResult.hasErrors()){
             Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
 
             model.addAttribute("news", news);

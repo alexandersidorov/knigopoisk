@@ -1,7 +1,10 @@
 package com.kngpsk.utils.censor;
 
+import org.springframework.util.StringUtils;
+
 import java.util.Iterator;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class CensorReport {
 
@@ -27,9 +30,13 @@ public class CensorReport {
         if (errors.size()==0)return "";
 
         StringBuilder report = new StringBuilder();
-        report.append("Bad words: ");
 
-        Iterator<Map.Entry<String,Integer> >errIt =  errors.entrySet().iterator();
+        //выкидываем все записи с нулевым совпадением
+        Map<String,Integer> bufMap =  errors.entrySet().stream().
+                filter(entry->entry.getValue()>0).
+                collect(Collectors.toMap(entry->entry.getKey(),entry->entry.getValue()));
+
+        Iterator<Map.Entry<String,Integer> >errIt =  bufMap.entrySet().iterator();
         while(errIt.hasNext()){
             Map.Entry<String,Integer> entry = errIt.next();
             if(entry.getValue()>0){
@@ -38,6 +45,9 @@ public class CensorReport {
                 report.append(s);
             }
         }
+
+        if(!StringUtils.isEmpty(report.toString()))
+            report.insert(0,"Bad words: ");
 
         return report.toString();
     }
