@@ -123,6 +123,7 @@ public class NewsController {
                            @RequestParam("ParText2") String text2,
                            @RequestParam("ParPic2") MultipartFile pic2){
 
+        StringBuilder message = new StringBuilder();
 
         boolean headIsEmpty = StringUtils.isEmpty(head);
         if(headIsEmpty)model.addAttribute("headError","Head is Empty");
@@ -130,11 +131,21 @@ public class NewsController {
         boolean textIsEmpty = StringUtils.isEmpty(text);
         if(textIsEmpty)model.addAttribute("textError","Text is Empty");
 
-        if(headIsEmpty || textIsEmpty){
+        //проверка на цензуру
+        boolean censorErrors = false;
+        String[] forCensor = {head,text,text1,text2};
+        String report = censorService.censor(forCensor);
+        if(!StringUtils.isEmpty(report)){
+            message.append(report);
+            censorErrors = true;
+        }
+
+        if(headIsEmpty || textIsEmpty || censorErrors){
+            model.addAttribute("message",message.toString());
             model.addAttribute("editNews", news);
             return "newsAdd";
         }else {
-            StringBuilder message = new StringBuilder();
+
             try {
                 newsService.updateNews(news, head, text, pic);
                 List<Paragraph> paragraphs = new ArrayList<>(news.getParagraphs());
