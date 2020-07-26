@@ -3,6 +3,7 @@ package com.kngpsk.controllers;
 import com.kngpsk.domain.News;
 import com.kngpsk.domain.Paragraph;
 import com.kngpsk.domain.User;
+import com.kngpsk.services.CensorService;
 import com.kngpsk.services.NewsService;
 import com.kngpsk.services.ParagraphService;
 import com.kngpsk.utils.ControllerUtils;
@@ -37,7 +38,7 @@ public class NewsController {
     ParagraphService paragraphService;
 
     @Autowired
-    Censor censor;
+    CensorService censorService;
 
     @GetMapping("/addNews")
     @PreAuthorize("hasAuthority('MODERATOR')")
@@ -66,26 +67,29 @@ public class NewsController {
         boolean textIsEmpty = StringUtils.isEmpty(news.getText());
         if(headIsEmpty)model.addAttribute("textError","Text is Empty");
 
-        //проверка на цензуру
+        //проверка на цензуру---------
         String report;
         boolean censorErrors = false;
+        String[] forCensor = {news.getHead(),news.getText(),text1,text2};
+        report = censorService.censor(forCensor);
 
-        //заголовок
-        Map<String,Integer> res = censor.getErrors(StringToList.getStringList(news.getHead()));
-        report = CensorReport.getReport(res, ReportSize.Small);
-        if(!StringUtils.isEmpty(report)){
-            model.addAttribute("headCensorError",report);
-            censorErrors = true;
-        }
 
-        //текст
-        res = censor.getErrors(StringToList.getStringList(news.getText()));
-        report = CensorReport.getReport(res, ReportSize.Small);
-        if(!StringUtils.isEmpty(report)){
-            model.addAttribute("textCensorError",report);
-            censorErrors = true;
-        }
-
+//        //заголовок
+//        Map<String,Integer> res = censor.getErrors(StringToList.getStringList(news.getHead()));
+//        report = CensorReport.getReport(res, ReportSize.Small);
+//        if(!StringUtils.isEmpty(report)){
+//            model.addAttribute("headCensorError",report);
+//            censorErrors = true;
+//        }
+//
+//        //текст
+//        res = censor.getErrors(StringToList.getStringList(news.getText()));
+//        report = CensorReport.getReport(res, ReportSize.Small);
+//        if(!StringUtils.isEmpty(report)){
+//            model.addAttribute("textCensorError",report);
+//            censorErrors = true;
+//        }
+        //------------
 
         if(headIsEmpty || textIsEmpty || censorErrors || bindingResult.hasErrors()){
             Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
