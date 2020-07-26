@@ -4,8 +4,7 @@
     <div class="form-group row">
         <label class="col-sm-2 col-form-label">Head:</label>
         <div class="col-sm-6">
-            <input type="text" name="head" class="form-control ${(headError??)?string('is-invalid', '')} ||
-            ${(headCensorError??)?string('is-invalid', '')} "
+            <input type="text" name="head" class="form-control ${(headError??)?string('is-invalid', '')}"
             value =
             <#if editNews??>"${editNews.head}"
             <#else> <#if news??>"${news.head}"<#else>""</#if>
@@ -17,13 +16,6 @@
                 ${headError}
                 </div>
             </#if>
-
-            <#if headCensorError??>
-                <div class="invalid-feedback">
-                ${headCensorError}
-                </div>
-            </#if>
-
 
         </div>
     </div>
@@ -41,8 +33,8 @@
     <div class="form-group row">
         <label class="col-sm-2 col-form-label">Text:</label>
         <div class="col-sm-6">
-            <textarea class="form-control ${(textError??)?string('is-invalid', '')} ||
-             ${(textCensorError??)?string('is-invalid', '')}" name = "text" aria-label="Text">
+            <textarea class="form-control ${(textError??)?string('is-invalid', '')}"
+             name = "text" aria-label="Text">
 
              <#if editNews??>${editNews.text}
              <#else> <#if news??>${news.text}</#if>
@@ -52,12 +44,6 @@
             <#if textError??>
                 <div class="invalid-feedback">
                 ${textError}
-                </div>
-            </#if>
-
-            <#if textCensorError??>
-                <div class="invalid-feedback">
-                ${textCensorError}
                 </div>
             </#if>
 

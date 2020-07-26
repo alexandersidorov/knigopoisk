@@ -7,10 +7,6 @@ import com.kngpsk.services.CensorService;
 import com.kngpsk.services.NewsService;
 import com.kngpsk.services.ParagraphService;
 import com.kngpsk.utils.ControllerUtils;
-import com.kngpsk.utils.StringToList;
-import com.kngpsk.utils.censor.Censor;
-import com.kngpsk.utils.censor.CensorReport;
-import com.kngpsk.utils.censor.ReportSize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -26,7 +22,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @Controller
 public class NewsController {
@@ -59,6 +58,7 @@ public class NewsController {
                            @RequestParam("ParPic2") MultipartFile pic2){
 
 
+        StringBuilder message = new StringBuilder();
         news.setAuthor(user);
 
         boolean headIsEmpty = StringUtils.isEmpty(news.getHead());
@@ -67,32 +67,19 @@ public class NewsController {
         boolean textIsEmpty = StringUtils.isEmpty(news.getText());
         if(headIsEmpty)model.addAttribute("textError","Text is Empty");
 
-        //проверка на цензуру---------
-        String report;
+        //проверка на цензуру
         boolean censorErrors = false;
         String[] forCensor = {news.getHead(),news.getText(),text1,text2};
-        report = censorService.censor(forCensor);
-
-
-//        //заголовок
-//        Map<String,Integer> res = censor.getErrors(StringToList.getStringList(news.getHead()));
-//        report = CensorReport.getReport(res, ReportSize.Small);
-//        if(!StringUtils.isEmpty(report)){
-//            model.addAttribute("headCensorError",report);
-//            censorErrors = true;
-//        }
-//
-//        //текст
-//        res = censor.getErrors(StringToList.getStringList(news.getText()));
-//        report = CensorReport.getReport(res, ReportSize.Small);
-//        if(!StringUtils.isEmpty(report)){
-//            model.addAttribute("textCensorError",report);
-//            censorErrors = true;
-//        }
-        //------------
+        String report = censorService.censor(forCensor);
+        if(!StringUtils.isEmpty(report)){
+            message.append(report);
+            censorErrors = true;
+        }
 
         if(headIsEmpty || textIsEmpty || censorErrors || bindingResult.hasErrors()){
             Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
+
+            model.addAttribute("message",message.toString());
 
             model.addAttribute("news", news);
 
@@ -101,7 +88,6 @@ public class NewsController {
             return "newsAdd";
 
         }else {
-            StringBuilder message = new StringBuilder();
             try {
                 News addedNews = newsService.updateNews(news,news.getHead(),news.getText(),pic);
                 paragraphService.addParagraph(addedNews, text1, 1, pic1);
