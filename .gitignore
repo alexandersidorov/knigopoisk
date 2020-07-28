@@ -3,7 +3,10 @@
 
 #исключение каталога target и uploads
 target
-uploads
+uploads/
+
+#разрешить файл default_avatar.jpg
+!uploads/default_avatar.jpg
 
 #исключение .idea
 .idea
