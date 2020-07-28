@@ -18,7 +18,7 @@ public class CensorService {
 
     private int addErrors(Map<String,Integer> commonErrors,String str){
 
-        Map<String,Integer> errors = censor.getErrors(StringToList.getStringList(str));
+        Map<String,Integer> errors = censor.getErrors(StringToList.getListByStr(str));
         errors.forEach(
                 (key,value)->commonErrors.merge(key,value,(v1, v2) -> (v1.intValue()+v2.intValue())  ) );
         return commonErrors.size();
